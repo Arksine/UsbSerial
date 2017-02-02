@@ -312,17 +312,21 @@ public class CH34xSerialDevice extends UsbSerialDevice
     }
 
     @Override
-    public void setRTS(boolean state)
+    public boolean setRTS(boolean state)
     {
         rts = state;
-        writeHandshakeByte();
+
+        return (writeHandshakeByte() >= 0);
+
     }
 
     @Override
-    public void setDTR(boolean state)
+    public boolean setDTR(boolean state)
     {
         dtr = state;
-        writeHandshakeByte();
+
+        return (writeHandshakeByte() >= 0);
+
     }
 
     @Override
@@ -403,13 +407,13 @@ public class CH34xSerialDevice extends UsbSerialDevice
             return -1;
         }
 
-        if(setControlCommandOut(0xa4, 0xdf, 0, null) < 0)
+        if(setControlCommandOut(0xa4, ~(dtr ? 1 << 5 : 0), 0, null) < 0)  // default dtr low
         {
             Log.i(CLASS_ID, "init failed! #2");
             return -1;
         }
 
-        if(setControlCommandOut(0xa4, 0x9f, 0, null) < 0)
+        if(setControlCommandOut(0xa4, ~((dtr ? 1 << 5 : 0) | (rts ? 1 << 6 : 0)), 0, null) < 0) // default rts low
         {
             Log.i(CLASS_ID, "init failed! #3");
             return -1;

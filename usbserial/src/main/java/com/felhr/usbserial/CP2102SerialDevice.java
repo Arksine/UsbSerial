@@ -331,27 +331,20 @@ public class CP2102SerialDevice extends UsbSerialDevice
     }
 
     @Override
-    public void setRTS(boolean state)
+    public boolean setRTS(boolean state)
     {
-        if(state)
-        {
-            setControlCommand(CP210x_SET_MHS, CP210x_MHS_RTS_ON, null);
-        }else
-        {
-            setControlCommand(CP210x_SET_MHS, CP210x_MHS_RTS_OFF, null);
-        }
+        int rts = state ? CP210x_MHS_RTS_ON : CP210x_MHS_RTS_OFF;
+        return (setControlCommand(CP210x_SET_MHS, rts, null) >= 0);
+
     }
 
     @Override
-    public void setDTR(boolean state)
+    public boolean setDTR(boolean state)
     {
-        if(state)
-        {
-            setControlCommand(CP210x_SET_MHS, CP210x_MHS_DTR_ON, null);
-        }else
-        {
-            setControlCommand(CP210x_SET_MHS, CP210x_MHS_DTR_OFF, null);
-        }
+        int dtr = state ? CP210x_MHS_DTR_ON : CP210x_MHS_DTR_OFF;
+        return (setControlCommand(CP210x_SET_MHS, dtr, null) >= 0);
+
+
     }
 
     @Override
@@ -550,6 +543,7 @@ public class CP2102SerialDevice extends UsbSerialDevice
         if(setControlCommand(CP210x_SET_MHS, CP210x_MHS_DEFAULT, null) < 0)
             return false;
 
+        // TODO: Do I need to default DTR AND RTS low the default setup?
         return true;
     }
 

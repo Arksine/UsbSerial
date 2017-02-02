@@ -361,27 +361,17 @@ public class FTDISerialDevice extends UsbSerialDevice
     }
 
     @Override
-    public void setRTS(boolean state)
+    public boolean setRTS(boolean state)
     {
-        if(state)
-        {
-            setControlCommand(FTDI_SIO_MODEM_CTRL, FTDI_SIO_SET_RTS_HIGH, 0, null);
-        }else
-        {
-            setControlCommand(FTDI_SIO_MODEM_CTRL, FTDI_SIO_SET_RTS_LOW, 0, null);
-        }
+        int rts = state ? FTDI_SIO_SET_RTS_HIGH : FTDI_SIO_SET_RTS_LOW;
+        return (setControlCommand(FTDI_SIO_MODEM_CTRL, rts, 0, null) >= 0);
     }
 
     @Override
-    public void setDTR(boolean state)
+    public boolean setDTR(boolean state)
     {
-        if(state)
-        {
-            setControlCommand(FTDI_SIO_MODEM_CTRL, FTDI_SIO_SET_DTR_HIGH, 0, null);
-        }else
-        {
-            setControlCommand(FTDI_SIO_MODEM_CTRL, FTDI_SIO_SET_DTR_LOW, 0, null);
-        }
+        int dtr = state ? FTDI_SIO_SET_DTR_HIGH : FTDI_SIO_SET_DTR_LOW;
+        return (setControlCommand(FTDI_SIO_MODEM_CTRL, dtr, 0, null) >= 0);
     }
 
     @Override
@@ -453,9 +443,9 @@ public class FTDISerialDevice extends UsbSerialDevice
         if(setControlCommand(FTDI_SIO_SET_DATA, FTDI_SET_DATA_DEFAULT, 0, null) < 0)
             return false;
         currentSioSetData = FTDI_SET_DATA_DEFAULT;
-        if(setControlCommand(FTDI_SIO_MODEM_CTRL, FTDI_SET_MODEM_CTRL_DEFAULT1, 0, null) < 0)
+        if(setControlCommand(FTDI_SIO_MODEM_CTRL, FTDI_SIO_SET_DTR_LOW, 0, null) < 0) // default DTR Low
             return false;
-        if(setControlCommand(FTDI_SIO_MODEM_CTRL, FTDI_SET_MODEM_CTRL_DEFAULT2, 0, null) < 0)
+        if(setControlCommand(FTDI_SIO_MODEM_CTRL, FTDI_SIO_SET_RTS_LOW, 0, null) < 0) // default RDS Low
             return false;
         if(setControlCommand(FTDI_SIO_SET_FLOW_CTRL, FTDI_SET_FLOW_CTRL_DEFAULT, 0, null) < 0)
             return false;

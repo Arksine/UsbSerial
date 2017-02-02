@@ -48,8 +48,8 @@ public interface UsbSerialInterface
     void setFlowControl(int flowControl);
 
     // Flow control commands and interface callback
-    void setRTS(boolean state);
-    void setDTR(boolean state);
+    boolean setRTS(boolean state);
+    boolean setDTR(boolean state);
     void getCTS(UsbCTSCallback ctsCallback);
     void getDSR(UsbDSRCallback dsrCallback);
 
