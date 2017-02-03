@@ -205,15 +205,17 @@ public class BLED112SerialDevice extends UsbSerialDevice
     }
 
     @Override
-    public void setRTS(boolean state)
+    public boolean setRTS(boolean state)
     {
         //TODO
+        return false;
     }
 
     @Override
-    public void setDTR(boolean state)
+    public boolean setDTR(boolean state)
     {
         //TODO
+        return false;
     }
 
     @Override
