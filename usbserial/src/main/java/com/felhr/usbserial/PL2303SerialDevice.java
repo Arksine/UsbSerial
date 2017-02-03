@@ -36,6 +36,7 @@ public class PL2303SerialDevice extends UsbSerialDevice
     private UsbEndpoint outEndpoint;
     private UsbRequest requestIN;
 
+    // TODO: add dtrRts initialization when its implemented
 
     public PL2303SerialDevice(UsbDevice device, UsbDeviceConnection connection)
     {

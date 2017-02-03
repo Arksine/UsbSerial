@@ -54,6 +54,8 @@ public class CP2102SerialDevice extends UsbSerialDevice
     private static final int CP210x_XOFF = 0x0000;
     private static final int DEFAULT_BAUDRATE = 9600;
 
+    private final int CP210x_DTR_DEFAULT;
+    private final int CP210x_RTS_DEFAULT;
     /**
      * Flow control variables
      */
@@ -80,17 +82,26 @@ public class CP2102SerialDevice extends UsbSerialDevice
 
     public CP2102SerialDevice(UsbDevice device, UsbDeviceConnection connection)
     {
-        this(device, connection, -1);
+        this(device, connection, true, -1);
     }
 
-    public CP2102SerialDevice(UsbDevice device, UsbDeviceConnection connection, int iface)
+    public CP2102SerialDevice(UsbDevice device, UsbDeviceConnection connection, boolean dtrRtsOn)
+    {
+        this(device, connection, dtrRtsOn, -1);
+    }
+
+
+    public CP2102SerialDevice(UsbDevice device, UsbDeviceConnection connection, boolean dtrRtsOn, int iface)
     {
         super(device, connection);
         rtsCtsEnabled = false;
         dtrDsrEnabled = false;
         ctsState = true;
         dsrState = true;
+        CP210x_DTR_DEFAULT = dtrRtsOn ? CP210x_MHS_DTR_ON : CP210x_MHS_DTR_OFF;
+        CP210x_RTS_DEFAULT = dtrRtsOn ? CP210x_MHS_RTS_ON : CP210x_MHS_RTS_OFF;
         mInterface = device.getInterface(iface >= 0 ? iface : 0);
+
     }
 
     @Override
@@ -542,8 +553,8 @@ public class CP2102SerialDevice extends UsbSerialDevice
         setFlowControl(UsbSerialInterface.FLOW_CONTROL_OFF);
         if(setControlCommand(CP210x_SET_MHS, CP210x_MHS_DEFAULT, null) < 0)
             return false;
+        // TODO: Add DTR / RTS default setup
 
-        // TODO: Do I need to default DTR AND RTS low the default setup?
         return true;
     }
 
