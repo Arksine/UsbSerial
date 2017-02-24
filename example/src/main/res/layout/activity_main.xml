@@ -6,7 +6,7 @@
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin"
                 android:paddingTop="@dimen/activity_vertical_margin"
-                tools:context="com.felhr.serialportexample.MainActivity">
+                tools:context="com.arksine.serialportexample.MainActivity">
 
     <TextView
         android:id="@+id/textViewTitle"

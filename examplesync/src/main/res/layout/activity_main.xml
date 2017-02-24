@@ -6,7 +6,7 @@
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
                 android:paddingTop="16dp"
-                tools:context="com.felhr.serialportexamplesync.MainActivity">
+                tools:context="com.arksine.serialportexamplesync.MainActivity">
 
     <TextView
         android:id="@+id/textViewTitle"
