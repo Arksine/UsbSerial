@@ -90,8 +90,8 @@ public class CH34xSerialDevice extends UsbSerialDevice
     private UsbDSRCallback dsrCallback;
     private boolean rtsCtsEnabled;
     private boolean dtrDsrEnabled;
-    private boolean dtr = false;
-    private boolean rts = false;
+    private boolean dtr = true;
+    private boolean rts = true;
     private boolean ctsState = false;
     private boolean dsrState = false;
 
@@ -101,11 +101,17 @@ public class CH34xSerialDevice extends UsbSerialDevice
         super(device, connection);
     }
 
-    public CH34xSerialDevice(UsbDevice device, UsbDeviceConnection connection, int iface)
+    public CH34xSerialDevice(UsbDevice device, UsbDeviceConnection connection, boolean dtrRtsOn) {
+        super(device, connection);
+    }
+
+    public CH34xSerialDevice(UsbDevice device, UsbDeviceConnection connection, boolean dtrRtsOn, int iface)
     {
         super(device, connection);
         rtsCtsEnabled = false;
         dtrDsrEnabled = false;
+        dtr = dtrRtsOn;
+        rts = dtrRtsOn;
         mInterface = device.getInterface(iface >= 0 ? iface : 0);
     }
 
@@ -312,17 +318,21 @@ public class CH34xSerialDevice extends UsbSerialDevice
     }
 
     @Override
-    public void setRTS(boolean state)
+    public boolean setRTS(boolean state)
     {
         rts = state;
-        writeHandshakeByte();
+
+        return (writeHandshakeByte() >= 0);
+
     }
 
     @Override
-    public void setDTR(boolean state)
+    public boolean setDTR(boolean state)
     {
         dtr = state;
-        writeHandshakeByte();
+
+        return (writeHandshakeByte() >= 0);
+
     }
 
     @Override
@@ -403,13 +413,13 @@ public class CH34xSerialDevice extends UsbSerialDevice
             return -1;
         }
 
-        if(setControlCommandOut(0xa4, 0xdf, 0, null) < 0)
+        if(setControlCommandOut(0xa4, ~(dtr ? 1 << 5 : 0), 0, null) < 0)  // set default dtr
         {
             Log.i(CLASS_ID, "init failed! #2");
             return -1;
         }
 
-        if(setControlCommandOut(0xa4, 0x9f, 0, null) < 0)
+        if(setControlCommandOut(0xa4, ~((dtr ? 1 << 5 : 0) | (rts ? 1 << 6 : 0)), 0, null) < 0) // set default rts
         {
             Log.i(CLASS_ID, "init failed! #3");
             return -1;

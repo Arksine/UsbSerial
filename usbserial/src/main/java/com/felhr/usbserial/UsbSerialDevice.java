@@ -55,10 +55,16 @@ public abstract class UsbSerialDevice implements UsbSerialInterface
 
     public static UsbSerialDevice createUsbSerialDevice(UsbDevice device, UsbDeviceConnection connection)
     {
-        return createUsbSerialDevice(device, connection, -1);
+        return createUsbSerialDevice(device, connection, true, -1);
     }
 
-    public static UsbSerialDevice createUsbSerialDevice(UsbDevice device, UsbDeviceConnection connection, int iface)
+    public static UsbSerialDevice createUsbSerialDevice(UsbDevice device, UsbDeviceConnection connection,
+                                                        boolean dtrRtsOn) {
+        return createUsbSerialDevice(device, connection, dtrRtsOn, -1);
+    }
+
+    public static UsbSerialDevice createUsbSerialDevice(UsbDevice device, UsbDeviceConnection connection,
+                                                        boolean dtrRtsOn, int iface)
     {
 		/*
 		 * It checks given vid and pid and will return a custom driver or a CDC serial driver.
@@ -69,13 +75,13 @@ public abstract class UsbSerialDevice implements UsbSerialInterface
         int pid = device.getProductId();
 
         if(FTDISioIds.isDeviceSupported(vid, pid))
-            return new FTDISerialDevice(device, connection, iface);
+            return new FTDISerialDevice(device, connection, dtrRtsOn, iface);
         else if(CP210xIds.isDeviceSupported(vid, pid))
-            return new CP2102SerialDevice(device, connection, iface);
+            return new CP2102SerialDevice(device, connection, dtrRtsOn, iface);
         else if(PL2303Ids.isDeviceSupported(vid, pid))
             return new PL2303SerialDevice(device, connection, iface);
         else if(CH34xIds.isDeviceSupported(vid, pid))
-            return new CH34xSerialDevice(device, connection, iface);
+            return new CH34xSerialDevice(device, connection, dtrRtsOn, iface);
         else if(isCdcDevice(device))
             return new CDCSerialDevice(device, connection, iface);
         else

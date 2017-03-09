@@ -45,6 +45,8 @@ public class CDCSerialDevice extends UsbSerialDevice
     private UsbEndpoint outEndpoint;
     private UsbRequest requestIN;
 
+    // TODO: add dtrRts initialization when its implemented
+
     public CDCSerialDevice(UsbDevice device, UsbDeviceConnection connection)
     {
         this(device, connection, -1);
@@ -216,15 +218,17 @@ public class CDCSerialDevice extends UsbSerialDevice
     }
 
     @Override
-    public void setRTS(boolean state)
+    public boolean setRTS(boolean state)
     {
         //TODO
+        return false;
     }
 
     @Override
-    public void setDTR(boolean state)
+    public boolean setDTR(boolean state)
     {
         //TODO
+        return false;
     }
 
     @Override
