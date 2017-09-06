@@ -6,12 +6,11 @@ import android.hardware.usb.UsbDeviceConnection;
 import android.hardware.usb.UsbEndpoint;
 import android.hardware.usb.UsbInterface;
 import android.hardware.usb.UsbRequest;
-import android.util.Log;
+
+import timber.log.Timber;
 
 public class CDCSerialDevice extends UsbSerialDevice
 {
-    private static final String CLASS_ID = CDCSerialDevice.class.getSimpleName();
-
     private static final int CDC_REQTYPE_HOST2DEVICE = 0x21;
     private static final int CDC_REQTYPE_DEVICE2HOST = 0xA1;
 
@@ -271,10 +270,10 @@ public class CDCSerialDevice extends UsbSerialDevice
     {
         if(connection.claimInterface(mInterface, true))
         {
-            Log.i(CLASS_ID, "Interface succesfully claimed");
+            Timber.i("Interface succesfully claimed");
         }else
         {
-            Log.i(CLASS_ID, "Interface could not be claimed");
+            Timber.i("Interface could not be claimed");
             return false;
         }
 
@@ -296,7 +295,7 @@ public class CDCSerialDevice extends UsbSerialDevice
 
         if(outEndpoint == null || inEndpoint == null)
         {
-            Log.i(CLASS_ID, "Interface does not have an IN or OUT interface");
+            Timber.i("Interface does not have an IN or OUT interface");
             return false;
         }
 
@@ -315,7 +314,7 @@ public class CDCSerialDevice extends UsbSerialDevice
             dataLength = data.length;
         }
         int response = connection.controlTransfer(CDC_REQTYPE_HOST2DEVICE, request, value, 0, data, dataLength, USB_TIMEOUT);
-        Log.i(CLASS_ID,"Control Transfer Response: " + String.valueOf(response));
+        Timber.i("Control Transfer Response: %d" + response);
         return response;
     }
 
@@ -323,7 +322,7 @@ public class CDCSerialDevice extends UsbSerialDevice
     {
         byte[] data = new byte[7];
         int response = connection.controlTransfer(CDC_REQTYPE_DEVICE2HOST, CDC_GET_LINE_CODING, 0, 0, data, data.length, USB_TIMEOUT);
-        Log.i(CLASS_ID,"Control Transfer Response: " + String.valueOf(response));
+        Timber.i("Control Transfer Response: %d", response);
         return data;
     }
 
@@ -339,7 +338,7 @@ public class CDCSerialDevice extends UsbSerialDevice
             }
         }
 
-        Log.i(CLASS_ID, "There is no CDC class interface");
+        Timber.i("There is no CDC class interface");
         return -1;
     }
 

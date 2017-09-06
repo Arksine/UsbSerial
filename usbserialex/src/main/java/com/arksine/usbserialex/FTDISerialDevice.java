@@ -8,12 +8,11 @@ import android.hardware.usb.UsbDeviceConnection;
 import android.hardware.usb.UsbEndpoint;
 import android.hardware.usb.UsbInterface;
 import android.hardware.usb.UsbRequest;
-import android.util.Log;
+
+import timber.log.Timber;
 
 public class FTDISerialDevice extends UsbSerialDevice
 {
-    private static final String CLASS_ID = FTDISerialDevice.class.getSimpleName();
-
     private static final int FTDI_SIO_RESET = 0;
     private static final int FTDI_SIO_MODEM_CTRL = 1;
     private static final int FTDI_SIO_SET_FLOW_CTRL = 2;
@@ -421,10 +420,10 @@ public class FTDISerialDevice extends UsbSerialDevice
     {
         if(connection.claimInterface(mInterface, true))
         {
-            Log.i(CLASS_ID, "Interface succesfully claimed");
+            Timber.i("Interface succesfully claimed");
         }else
         {
-            Log.i(CLASS_ID, "Interface could not be claimed");
+            Timber.i("Interface could not be claimed");
             return false;
         }
 
@@ -474,7 +473,7 @@ public class FTDISerialDevice extends UsbSerialDevice
             dataLength = data.length;
         }
         int response = connection.controlTransfer(FTDI_REQTYPE_HOST2DEVICE, request, value, mInterface.getId() + 1 + index, data, dataLength, USB_TIMEOUT);
-        Log.i(CLASS_ID,"Control Transfer Response: " + String.valueOf(response));
+        Timber.i("Control Transfer Response: %d", response);
         return response;
     }
 

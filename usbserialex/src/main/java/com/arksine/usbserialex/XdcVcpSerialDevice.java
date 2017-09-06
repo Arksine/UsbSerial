@@ -6,7 +6,8 @@ import android.hardware.usb.UsbDeviceConnection;
 import android.hardware.usb.UsbEndpoint;
 import android.hardware.usb.UsbInterface;
 import android.hardware.usb.UsbRequest;
-import android.util.Log;
+
+import timber.log.Timber;
 
 /*
  * Werner Wolfrum (w.wolfrum@wolfrum-elektronik.de)
@@ -14,8 +15,6 @@ import android.util.Log;
 @Deprecated
 public class XdcVcpSerialDevice extends UsbSerialDevice
 {
-    private static final String CLASS_ID = XdcVcpSerialDevice.class.getSimpleName();
-
     private static final int XDCVCP_IFC_ENABLE = 0x00;
     private static final int XDCVCP_SET_BAUDDIV = 0x01;
     private static final int XDCVCP_SET_LINE_CTL = 0x03;
@@ -76,10 +75,10 @@ public class XdcVcpSerialDevice extends UsbSerialDevice
 
         if(connection.claimInterface(mInterface, true))
         {
-            Log.i(CLASS_ID, "Interface succesfully claimed");
+            Timber.i("Interface succesfully claimed");
         }else
         {
-            Log.i(CLASS_ID, "Interface could not be claimed");
+            Timber.i("Interface could not be claimed");
             return false;
         }
 
@@ -356,7 +355,7 @@ public class XdcVcpSerialDevice extends UsbSerialDevice
             dataLength = data.length;
         }
         int response = connection.controlTransfer(XDCVCP_REQTYPE_HOST2DEVICE, request, value, mInterface.getId(), data, dataLength, USB_TIMEOUT);
-        Log.i(CLASS_ID,"Control Transfer Response: " + String.valueOf(response));
+        Timber.i("Control Transfer Response: %d", response);
         return response;
     }
 
@@ -364,7 +363,7 @@ public class XdcVcpSerialDevice extends UsbSerialDevice
     {
         byte[] data = new byte[2];
         int response = connection.controlTransfer(XDCVCP_REQTYPE_DEVICE2HOST, XDCVCP_GET_LINE_CTL, 0, mInterface.getId(), data, data.length,  USB_TIMEOUT );
-        Log.i(CLASS_ID,"Control Transfer Response: " + String.valueOf(response));
+        Timber.i("Control Transfer Response: %d", response);
         return data;
     }
 

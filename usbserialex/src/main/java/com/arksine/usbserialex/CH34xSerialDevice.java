@@ -12,14 +12,13 @@ import android.hardware.usb.UsbDeviceConnection;
 import android.hardware.usb.UsbEndpoint;
 import android.hardware.usb.UsbInterface;
 import android.hardware.usb.UsbRequest;
-import android.util.Log;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import timber.log.Timber;
+
 public class CH34xSerialDevice extends UsbSerialDevice
 {
-    private static final String CLASS_ID = CH34xSerialDevice.class.getSimpleName();
-
     private static final int DEFAULT_BAUDRATE = 9600;
 
     private static final int REQTYPE_HOST_FROM_DEVICE = UsbConstants.USB_TYPE_VENDOR | UsbConstants.USB_DIR_IN;
@@ -184,68 +183,68 @@ public class CH34xSerialDevice extends UsbSerialDevice
         {
             int ret = setBaudRate(CH34X_300_1312, CH34X_300_0f2c); //300
             if(ret == -1)
-                Log.i(CLASS_ID, "SetBaudRate failed!");
+                Timber.w("SetBaudRate failed!");
         }else if(baudRate > 300  && baudRate <= 600)
         {
             int ret = setBaudRate(CH34X_600_1312, CH34X_600_0f2c); //600
             if(ret == -1)
-                Log.i(CLASS_ID, "SetBaudRate failed!");
+                Timber.w("SetBaudRate failed!");
 
         }else if(baudRate > 600 && baudRate <= 1200)
         {
             int ret = setBaudRate(CH34X_1200_1312, CH34X_1200_0f2c); //1200
             if(ret == -1)
-                Log.i(CLASS_ID, "SetBaudRate failed!");
+                Timber.w("SetBaudRate failed!");
         }else if(baudRate > 1200 && baudRate <=2400)
         {
             int ret = setBaudRate(CH34X_2400_1312, CH34X_2400_0f2c); //2400
             if(ret == -1)
-                Log.i(CLASS_ID, "SetBaudRate failed!");
+                Timber.w("SetBaudRate failed!");
         }else if(baudRate > 2400 && baudRate <= 4800)
         {
             int ret = setBaudRate(CH34X_4800_1312, CH34X_4800_0f2c); //4800
             if(ret == -1)
-                Log.i(CLASS_ID, "SetBaudRate failed!");
+                Timber.w("SetBaudRate failed!");
         }else if(baudRate > 4800 && baudRate <= 9600)
         {
             int ret = setBaudRate(CH34X_9600_1312, CH34X_9600_0f2c); //9600
             if(ret == -1)
-                Log.i(CLASS_ID, "SetBaudRate failed!");
+                Timber.w("SetBaudRate failed!");
         }else if(baudRate > 9600 && baudRate <= 19200)
         {
             int ret = setBaudRate(CH34X_19200_1312, CH34X_19200_0f2c_rest); //19200
             if(ret == -1)
-                Log.i(CLASS_ID, "SetBaudRate failed!");
+                Timber.w("SetBaudRate failed!");
         }else if(baudRate > 19200 && baudRate <= 38400)
         {
             int ret = setBaudRate(CH34X_38400_1312, CH34X_19200_0f2c_rest); //38400
             if(ret == -1)
-                Log.i(CLASS_ID, "SetBaudRate failed!");
+                Timber.w("SetBaudRate failed!");
         }else if(baudRate > 38400 && baudRate <= 57600)
         {
             int ret = setBaudRate(CH34X_57600_1312, CH34X_19200_0f2c_rest); //57600
             if(ret == -1)
-                Log.i(CLASS_ID, "SetBaudRate failed!");
+                Timber.w("SetBaudRate failed!");
         }else if(baudRate > 57600 && baudRate <= 115200) //115200
         {
             int ret = setBaudRate(CH34X_115200_1312, CH34X_19200_0f2c_rest);
             if(ret == -1)
-                Log.i(CLASS_ID, "SetBaudRate failed!");
+                Timber.w("SetBaudRate failed!");
         }else if(baudRate > 115200 && baudRate <= 230400) //230400
         {
             int ret = setBaudRate(CH34X_230400_1312, CH34X_19200_0f2c_rest);
             if(ret == -1)
-                Log.i(CLASS_ID, "SetBaudRate failed!");
+                Timber.w("SetBaudRate failed!");
         }else if(baudRate > 230400 && baudRate <= 460800) //460800
         {
             int ret = setBaudRate(CH34X_460800_1312, CH34X_19200_0f2c_rest);
             if(ret == -1)
-                Log.i(CLASS_ID, "SetBaudRate failed!");
+                Timber.w("SetBaudRate failed!");
         }else if(baudRate > 460800 && baudRate <= 921600)
         {
             int ret = setBaudRate(CH34X_921600_1312, CH34X_19200_0f2c_rest);
             if(ret == -1)
-                Log.i(CLASS_ID, "SetBaudRate failed!");
+                Timber.w("SetBaudRate failed!");
         }
     }
 
@@ -375,10 +374,10 @@ public class CH34xSerialDevice extends UsbSerialDevice
     {
         if(connection.claimInterface(mInterface, true))
         {
-            Log.i(CLASS_ID, "Interface succesfully claimed");
+            Timber.i("Interface succesfully claimed");
         }else
         {
-            Log.i(CLASS_ID, "Interface could not be claimed");
+            Timber.i("Interface could not be claimed");
             return false;
         }
 
@@ -409,19 +408,19 @@ public class CH34xSerialDevice extends UsbSerialDevice
 
         if(setControlCommandOut(0xa1, 0xc29c, 0xb2b9, null) < 0)
         {
-            Log.i(CLASS_ID, "init failed! #1");
+            Timber.w("init failed! #1");
             return -1;
         }
 
         if(setControlCommandOut(0xa4, ~(dtr ? 1 << 5 : 0), 0, null) < 0)  // set default dtr
         {
-            Log.i(CLASS_ID, "init failed! #2");
+            Timber.w("init failed! #2");
             return -1;
         }
 
         if(setControlCommandOut(0xa4, ~((dtr ? 1 << 5 : 0) | (rts ? 1 << 6 : 0)), 0, null) < 0) // set default rts
         {
-            Log.i(CLASS_ID, "init failed! #3");
+            Timber.w("init failed! #3");
             return -1;
         }
 
@@ -430,25 +429,25 @@ public class CH34xSerialDevice extends UsbSerialDevice
 
         if(setControlCommandOut(0x9a, 0x2727, 0x0000, null) < 0)
         {
-            Log.i(CLASS_ID, "init failed! #5");
+            Timber.w("init failed! #5");
             return -1;
         }
 
         if(setControlCommandOut(0x9a, 0x1312, 0xb282, null) < 0)
         {
-            Log.i(CLASS_ID, "init failed! #6");
+            Timber.w("init failed! #6");
             return -1;
         }
 
         if(setControlCommandOut(0x9a, 0x0f2c, 0x0008, null) < 0)
         {
-            Log.i(CLASS_ID, "init failed! #7");
+            Timber.w("init failed! #7");
             return -1;
         }
 
         if(setControlCommandOut(0x9a, 0x2518, 0x00c3, null) < 0)
         {
-            Log.i(CLASS_ID, "init failed! #8");
+            Timber.w("init failed! #8");
             return -1;
         }
 
@@ -457,7 +456,7 @@ public class CH34xSerialDevice extends UsbSerialDevice
 
         if(setControlCommandOut(0x9a, 0x2727, 0x0000, null) < 0)
         {
-            Log.i(CLASS_ID, "init failed! #10");
+            Timber.w("init failed! #10");
             return -1;
         }
 
@@ -504,7 +503,7 @@ public class CH34xSerialDevice extends UsbSerialDevice
 
         if (ret != expected.length)
         {
-            Log.i(CLASS_ID, ("Expected " + expected.length + " bytes, but get " + ret + " [" + msg + "]"));
+            Timber.w("Expected %d bytes, but get %d [%s]", expected.length, ret, msg);
             return -1;
         }else
         {
@@ -519,7 +518,7 @@ public class CH34xSerialDevice extends UsbSerialDevice
 
         if(ret != 2)
         {
-            Log.i(CLASS_ID, ("Expected " + "2" + " bytes, but get " + ret));
+            Timber.w("Expected 2 bytes, but get %d", ret);
             return false;
         }
 
@@ -539,7 +538,7 @@ public class CH34xSerialDevice extends UsbSerialDevice
 
         if(ret != 2)
         {
-            Log.i(CLASS_ID, ("Expected " + "2" + " bytes, but get " + ret));
+            Timber.w("Expected 2 bytes, but get %d", ret);
             return false;
         }
 
@@ -556,7 +555,7 @@ public class CH34xSerialDevice extends UsbSerialDevice
     {
         if(setControlCommandOut(0xa4, ~((dtr ? 1 << 5 : 0) | (rts ? 1 << 6 : 0)), 0, null) < 0)
         {
-            Log.i(CLASS_ID, "Failed to set handshake byte");
+            Timber.i("Failed to set handshake byte");
             return -1;
         }
         return 0;
@@ -570,7 +569,7 @@ public class CH34xSerialDevice extends UsbSerialDevice
             dataLength = data.length;
         }
         int response = connection.controlTransfer(REQTYPE_HOST_TO_DEVICE, request, value, index, data, dataLength, USB_TIMEOUT);
-        Log.i(CLASS_ID,"Control Transfer Response: " + String.valueOf(response));
+        Timber.i("Control Transfer Response: %d", response);
         return response;
     }
 
@@ -582,7 +581,7 @@ public class CH34xSerialDevice extends UsbSerialDevice
             dataLength = data.length;
         }
         int response = connection.controlTransfer(REQTYPE_HOST_FROM_DEVICE, request, value, index, data, dataLength, USB_TIMEOUT);
-        Log.i(CLASS_ID,"Control Transfer Response: " + String.valueOf(response));
+        Timber.i("Control Transfer Response: %d", response);
         return response;
     }
 

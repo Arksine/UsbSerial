@@ -2,11 +2,10 @@ package com.arksine.usbserialex;
 
 import com.arksine.utils.HexData;
 
-import android.util.Log;
+import timber.log.Timber;
 
 public class UsbSerialDebugger
 {
-    private static final String CLASS_ID = UsbSerialDebugger.class.getSimpleName();
     public static final String ENCODING = "UTF-8";
 
     private UsbSerialDebugger()
@@ -18,12 +17,12 @@ public class UsbSerialDebugger
     {
         if(!verbose)
         {
-            Log.i(CLASS_ID, "Data obtained from write buffer: " + new String(src));
+            Timber.i("Data obtained from write buffer: %s", new String(src));
         }else
         {
-            Log.i(CLASS_ID, "Data obtained from write buffer: " + new String(src));
-            Log.i(CLASS_ID, "Raw data from write buffer: " + HexData.hexToString(src));
-            Log.i(CLASS_ID, "Number of bytes obtained from write buffer: " + src.length);
+            Timber.i("Data obtained from write buffer: %s", new String(src));
+            Timber.i("Raw data from write buffer: %s", HexData.hexToString(src));
+            Timber.i("Number of bytes obtained from write buffer: %d", src.length);
         }
     }
 
@@ -31,12 +30,12 @@ public class UsbSerialDebugger
     {
         if(!verbose)
         {
-            Log.i(CLASS_ID, "Data obtained pushed to write buffer: " + new String(src));
+            Timber.i("Data obtained pushed to write buffer: %s", new String(src));
         }else
         {
-            Log.i(CLASS_ID, "Data obtained pushed to write buffer: " + new String(src));
-            Log.i(CLASS_ID, "Raw data pushed to write buffer: " + HexData.hexToString(src));
-            Log.i(CLASS_ID, "Number of bytes pushed from write buffer: " + src.length);
+            Timber.i("Data obtained pushed to write buffer: %s", new String(src));
+            Timber.i("Raw data pushed to write buffer: %s", HexData.hexToString(src));
+            Timber.i("Number of bytes pushed from write buffer: %d", src.length);
         }
     }
 
@@ -44,12 +43,12 @@ public class UsbSerialDebugger
     {
         if(!verbose)
         {
-            Log.i(CLASS_ID, "Data obtained from Read buffer: " + new String(src));
+            Timber.i("Data obtained from Read buffer: %s", new String(src));
         }else
         {
-            Log.i(CLASS_ID, "Data obtained from Read buffer: " + new String(src));
-            Log.i(CLASS_ID, "Raw data from Read buffer: " + HexData.hexToString(src));
-            Log.i(CLASS_ID, "Number of bytes obtained from Read buffer: " + src.length);
+            Timber.i("Data obtained from Read buffer: %s", new String(src));
+            Timber.i("Raw data from Read buffer: %s", HexData.hexToString(src));
+            Timber.i("Number of bytes obtained from Read buffer: %d", src.length);
         }
     }
 
@@ -57,12 +56,12 @@ public class UsbSerialDebugger
     {
         if(!verbose)
         {
-            Log.i(CLASS_ID, "Data obtained pushed to read buffer: " + new String(src));
+            Timber.i( "Data obtained pushed to read buffer: %s", new String(src));
         }else
         {
-            Log.i(CLASS_ID, "Data obtained pushed to read buffer: " + new String(src));
-            Log.i(CLASS_ID, "Raw data pushed to read buffer: " + HexData.hexToString(src));
-            Log.i(CLASS_ID, "Number of bytes pushed from read buffer: " + src.length);
+            Timber.i("Data obtained pushed to read buffer: %s", new String(src));
+            Timber.i("Raw data pushed to read buffer: %s", HexData.hexToString(src));
+            Timber.i("Number of bytes pushed from read buffer: %d", src.length);
         }
     }
 

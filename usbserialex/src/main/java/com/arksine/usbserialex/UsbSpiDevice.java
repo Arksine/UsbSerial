@@ -10,8 +10,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public abstract class UsbSpiDevice implements UsbSpiInterface
 {
-    private static final String CLASS_ID = UsbSerialDevice.class.getSimpleName();
-
     protected static final int USB_TIMEOUT = 5000;
 
     protected final UsbDevice device;

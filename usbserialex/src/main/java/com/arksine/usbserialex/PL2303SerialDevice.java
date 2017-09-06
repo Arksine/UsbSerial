@@ -6,11 +6,11 @@ import android.hardware.usb.UsbDeviceConnection;
 import android.hardware.usb.UsbEndpoint;
 import android.hardware.usb.UsbInterface;
 import android.hardware.usb.UsbRequest;
-import android.util.Log;
+
+import timber.log.Timber;
 
 public class PL2303SerialDevice extends UsbSerialDevice
 {
-    private static final String CLASS_ID = PL2303SerialDevice.class.getSimpleName();
 
     private static final int PL2303_REQTYPE_HOST2DEVICE_VENDOR = 0x40;
     private static final int PL2303_REQTYPE_DEVICE2HOST_VENDOR = 0xC0;
@@ -307,10 +307,10 @@ public class PL2303SerialDevice extends UsbSerialDevice
     {
         if(connection.claimInterface(mInterface, true))
         {
-            Log.i(CLASS_ID, "Interface succesfully claimed");
+            Timber.i("Interface succesfully claimed");
         }else
         {
-            Log.i(CLASS_ID, "Interface could not be claimed");
+            Timber.i("Interface could not be claimed");
             return false;
         }
 
@@ -369,7 +369,7 @@ public class PL2303SerialDevice extends UsbSerialDevice
         if(data != null)
             dataLength = data.length;
         int response = connection.controlTransfer(reqType, request, value, index, data, dataLength, USB_TIMEOUT);
-        Log.i(CLASS_ID,"Control Transfer Response: " + String.valueOf(response));
+        Timber.i("Control Transfer Response: %d", response);
         return response;
     }
 }

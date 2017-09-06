@@ -6,14 +6,13 @@ import android.hardware.usb.UsbDeviceConnection;
 import android.hardware.usb.UsbEndpoint;
 import android.hardware.usb.UsbInterface;
 import android.hardware.usb.UsbRequest;
-import android.util.Log;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import timber.log.Timber;
+
 public class CP2102SerialDevice extends UsbSerialDevice
 {
-    private static final String CLASS_ID = CP2102SerialDevice.class.getSimpleName();
-
     private static final int CP210x_IFC_ENABLE = 0x00;
     private static final int CP210x_SET_BAUDDIV = 0x01;
     private static final int CP210x_SET_LINE_CTL = 0x03;
@@ -521,10 +520,10 @@ public class CP2102SerialDevice extends UsbSerialDevice
     {
         if(connection.claimInterface(mInterface, true))
         {
-            Log.i(CLASS_ID, "Interface succesfully claimed");
+            Timber.i("Interface succesfully claimed");
         }else
         {
-            Log.i(CLASS_ID, "Interface could not be claimed");
+            Timber.i("Interface could not be claimed");
             return false;
         }
 
@@ -586,7 +585,7 @@ public class CP2102SerialDevice extends UsbSerialDevice
             dataLength = data.length;
         }
         int response = connection.controlTransfer(CP210x_REQTYPE_HOST2DEVICE, request, value, mInterface.getId(), data, dataLength, USB_TIMEOUT);
-        Log.i(CLASS_ID,"Control Transfer Response: " + String.valueOf(response));
+        Timber.i("Control Transfer Response: %d", response);
         return response;
     }
 
@@ -601,7 +600,7 @@ public class CP2102SerialDevice extends UsbSerialDevice
     {
         byte[] data = new byte[19];
         int response = connection.controlTransfer(CP210x_REQTYPE_DEVICE2HOST, CP210x_GET_COMM_STATUS, 0, mInterface.getId(), data, 19, USB_TIMEOUT);
-        Log.i(CLASS_ID, "Control Transfer Response (Comm status): " + String.valueOf(response));
+        Timber.i("Control Transfer Response (Comm status): %d", response);
         return data;
     }
 
@@ -609,7 +608,7 @@ public class CP2102SerialDevice extends UsbSerialDevice
     {
         byte[] data = new byte[2];
         int response = connection.controlTransfer(CP210x_REQTYPE_DEVICE2HOST, CP210x_GET_LINE_CTL, 0, mInterface.getId(), data, data.length, USB_TIMEOUT);
-        Log.i(CLASS_ID,"Control Transfer Response: " + String.valueOf(response));
+        Timber.i("Control Transfer Response: %d", response);
         return data;
     }
 }

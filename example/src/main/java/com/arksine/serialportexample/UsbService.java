@@ -21,6 +21,8 @@ import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
+import timber.log.Timber;
+
 public class UsbService extends Service {
 
     public static final String ACTION_USB_READY = "com.felhr.connectivityservices.USB_READY";
@@ -130,6 +132,7 @@ public class UsbService extends Service {
      */
     @Override
     public void onCreate() {
+        Timber.plant(new Timber.DebugTree());
         this.context = this;
         serialPortConnected = false;
         UsbService.SERVICE_CONNECTED = true;

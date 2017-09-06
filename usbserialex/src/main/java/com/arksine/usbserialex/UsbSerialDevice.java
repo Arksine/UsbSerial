@@ -16,8 +16,6 @@ import android.hardware.usb.UsbRequest;
 
 public abstract class UsbSerialDevice implements UsbSerialInterface
 {
-    private static final String CLASS_ID = UsbSerialDevice.class.getSimpleName();
-
     private static boolean mr1Version;
     protected final UsbDevice device;
     protected final UsbDeviceConnection connection;

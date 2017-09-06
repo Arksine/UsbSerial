@@ -34,3 +34,7 @@ android {
 
     createJar.dependsOn(deleteJar, build)
 }
+
+dependencies {
+    compile 'com.jakewharton.timber:timber:4.5.1'
+}
